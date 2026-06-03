@@ -1,0 +1,315 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+public class CRUD_Test {
+
+public static void main(String[] args) {
+	CRUD_Test objTest=new CRUD_Test();
+        //insert data
+	objTest.create_data("101", "priya", "priya@gmail.com");
+	objTest.create_data("102", "jiya", "jiya@gmail.com");
+        //read data
+	objTest.read_data("101");
+        //update data
+	objTest.update_data("102", "22", "jiya2", "jiya2@gmail");
+        //delete data
+	objTest.delete_data("1");
+}
+
+public void create_data(String sl_no,String name,String email){
+	DB_Connection obj_DB_Connection=new DB_Connection();
+	Connection connection=obj_DB_Connection.get_connection();
+	PreparedStatement ps=null;
+	try {
+		String query="insert into user(sl_no,name,email) values (?,?,?)";
+		ps=connection.prepareStatement(query);
+		ps.setString(1, sl_no);
+		ps.setString(2, name);
+		ps.setString(3, email);
+		System.out.println(ps);
+		ps.executeUpdate();
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+}
+
+public void edit_data(String sl_no){
+	DB_Connection obj_DB_Connection=new DB_Connection();
+	Connection connection=obj_DB_Connection.get_connection();
+	PreparedStatement ps=null;
+	ResultSet rs=null;
+	try {
+		String query="select * from user";
+		ps=connection.prepareStatement(query);
+		//ps.setString(1, sl_no);
+		System.out.println(ps);
+		rs=ps.executeQuery();
+		while(rs.next()){
+		System.out.println("Sl no -"+rs.getString("sl_no"));
+		System.out.println("name -"+rs.getString("name"));
+		System.out.println("email -"+rs.getString("email"));
+		System.out.println("---------------");
+		}
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+}
+
+
+public void alter_table(String column_name, String data_type) {
+    DB_Connection obj_DB_Connection = new DB_Connection();
+    Connection connection = obj_DB_Connection.get_connection();
+    PreparedStatement ps = null;
+    try {
+        // Alter query instead of update
+        String query = "alter table user add " + column_name + " " + data_type;
+        ps = connection.prepareStatement(query);
+        
+        System.out.println(ps);
+        ps.executeUpdate();
+    } catch (Exception e) {
+   import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.bson.Document;
+
+public class Test2 {
+
+    public static void main(String[] args) {
+
+        // Connect to MongoDB
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+
+        // Access Database and Collection
+        MongoDatabase database = mongoClient.getDatabase("CollegeDB");
+        MongoCollection<Document> collection = database.getCollection("Students");
+
+        // ==========================
+        // CREATE (Insert 5 Students)
+        // ==========================
+        collection.insertOne(new Document("id", 101)
+                .append("name", "Aarav")
+                .append("department", "CSE")
+                .append("cgpa", 8.5));
+
+        collection.insertOne(new Document("id", 102)
+                .append("name", "Priya")
+                .append("department", "IT")
+                .append("cgpa", 9.1));
+
+        collection.insertOne(new Document("id", 103)
+                .append("name", "Rahul")
+                .append("department", "ECE")
+                .append("cgpa", 8.0));
+
+        collection.insertOne(new Document("id", 104)
+                .append("name", "Sneha")
+                .append("department", "ME")
+                .append("cgpa", 8.8));
+
+        collection.insertOne(new Document("id", 105)
+                .append("name", "Vikram")
+                .append("department", "CIVIL")
+                .append("cgpa", 7.9));
+
+        System.out.println("5 Documents Inserted Successfully");
+
+        // ==========================
+        // READ (Display All Students)
+        // ==========================
+        System.out.println("\nStudent Records:");
+
+        FindIterable<Document> students = collection.find();
+
+        for (Document doc : students) {
+            System.out.println(doc.toJson());
+        }
+
+        // ==========================
+        // UPDATE
+        // Update CGPA of Student ID 103
+        // ==========================
+        collection.updateOne(
+                Filters.eq("id", 103),
+                Updates.set("cgpa", 9.3)
+        );
+
+        System.out.println("\nStudent ID 103 Updated Successfully");
+
+        // ==========================
+        // READ Updated Record
+        // ==========================
+        Document updatedStudent =
+                collection.find(Filters.eq("id", 103)).first();
+
+        System.out.println("\nUpdated Record:");
+
+        if (updatedStudent != null) {
+            System.out.println(updatedStudent.toJson());
+        }
+
+        // ==========================
+        // DELETE
+        // Delete Student ID 105
+        // ==========================
+        collection.deleteOne(Filters.eq("id", 105));
+
+        System.out.println("\nStudent ID 105 Deleted Successfully");
+
+        // ==========================
+        // DISPLAY FINAL RECORDS
+        // ==========================
+        System.out.println("\nFinal Student Records:");
+
+        for (Document doc : collection.find()) {
+            System.out.println(doc.toJson());
+        }
+
+        // Close Connection
+        mongoClient.close();
+    }
+}
+
+package mongodb2;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
+import java.util.Arrays;
+
+import org.bson.Document;
+
+public class Test2 {
+
+    public static void main(String[] args) {
+
+        // Connect to MongoDB
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+
+        // Access Database and Collection
+        MongoDatabase database = mongoClient.getDatabase("CollegeDB");
+        MongoCollection<Document> collection = database.getCollection("Students");
+
+        
+        // CREATE (Insert 5 Students)
+       
+        collection.insertMany(Arrays.asList(
+
+                new Document("id", 101)
+                        .append("name", "Aarav")
+                        .append("department", "CSE")
+                        .append("cgpa", 8.5),
+
+                new Document("id", 102)
+                        .append("name", "Priya")
+                        .append("department", "IT")
+                        .append("cgpa", 9.1),
+
+                new Document("id", 103)
+                        .append("name", "Rahul")
+                        .append("department", "CSE")
+                        .append("cgpa", 8.0),
+
+                new Document("id", 104)
+                        .append("name", "Sneha")
+                        .append("department", "ME")
+                        .append("cgpa", 8.8),
+
+                new Document("id", 105)
+                        .append("name", "Vikram")
+                        .append("department", "CSE")
+                        .append("cgpa", 7.9)
+        ));
+
+        System.out.println("5 Documents Inserted Successfully");
+
+        
+        // READ (Display All Students)
+       
+        System.out.println("\nStudent Records:");
+
+        FindIterable<Document> students = collection.find();
+
+        for (Document doc : students) {
+            System.out.println(doc.toJson());
+        }
+
+        
+        // UPDATE
+        // Update CGPA of Student ID 103
+      
+        collection.updateMany(
+                Filters.eq("department", "CSE"),
+                Updates.set("department", "Computer Science")
+        );
+
+        System.out.println("\nMultiple Documents Updated Successfully");
+
+    
+        // READ Updated Record
+       
+        System.out.println("\nRecords After Update:");
+
+        for (Document doc : collection.find()) {
+            System.out.println(doc.toJson());
+        }
+      
+        
+        // Delete Student ID 105
+       
+        collection.deleteMany(
+                Filters.eq("department", "Computer Science")
+        );
+
+        System.out.println("\nMultiple Documents Deleted Successfully");
+
+        
+        // DISPLAY FINAL RECORDS
+       
+        System.out.println("\nFinal Student Records:");
+
+        for (Document doc : collection.find()) {
+            System.out.println(doc.toJson());
+        }
+
+        // Close Connection
+        mongoClient.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

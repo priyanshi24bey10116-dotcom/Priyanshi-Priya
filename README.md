@@ -307,7 +307,7 @@ node seedNotes.js
 ### Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/priyanshi24bey10116-dotcom/Priyanshi-Priya.git
 ```
 
 ### Install Dependencies
@@ -388,8 +388,6 @@ The system successfully provides:
 
 ## Author
 
-Rudraksh Mishra
-
-B.Tech CSE
-
+Priyanshi Priya
+B.Tech CSE in Specialization with E-Commerce 
 Personal Knowledge Base (Second Brain) Project

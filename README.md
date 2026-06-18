@@ -389,5 +389,7 @@ The system successfully provides:
 ## Author
 
 Priyanshi Priya
+
 B.Tech CSE in Specialization with E-Commerce 
+
 Personal Knowledge Base (Second Brain) Project
